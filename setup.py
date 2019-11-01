@@ -24,7 +24,7 @@ setup(name='cloudformation-utils',
           'console_scripts': [],
       },
       setup_requires=['pytest-runner'],
-      install_requires=[],
+      install_requires=['pyyaml'],
       tests_require=[
           'pytest==4.6.5',
           'pytest-mock==1.10.4',
