@@ -8,7 +8,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='cloudformation-utils',
-      version='0.0.1',
+      version='0.0.2',
       description='Utility functions for working with AWS CloudFormation templates',
       long_description=long_description,
       long_description_content_type='text/markdown',
