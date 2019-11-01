@@ -1,0 +1,11 @@
+- name: ci
+  type: parallel
+  steps:
+  - service: cloudformation-utils-p37
+    command: pytest --cov=cloudformation_utils
+  - service: cloudformation-utils-p36
+    command: pytest --cov=cloudformation_utils
+  - service: cloudformation-utils-p35
+    command: pytest --cov=cloudformation_utils
+  - service: cloudformation-utils-p27
+    command: pytest --cov=cloudformation_utils
