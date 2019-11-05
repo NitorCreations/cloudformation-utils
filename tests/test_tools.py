@@ -1,5 +1,5 @@
 import pytest
-from cloudformation_utils.tools import process_script, process_script_decorated
+from cloudformation_utils.tools import process_script, process_script_decorated, cloudformation_yaml_loads
 from collections import OrderedDict
 
 SHELL_RES = ['#!/bin/bash -xe\n', '\n', "CF_Foo='", OrderedDict([('Ref', 'Foo')]), "'\n", "Foo='", OrderedDict([('Ref', 'MyParam')]), "'\n"]
@@ -18,3 +18,6 @@ def test_ps1():
 
 def test_ps1_decorated():
     assert process_script_decorated("tests/powershell.ps1") == PS_RES_DECORATED
+
+def test_yaml_loads():
+    assert cloudformation_yaml_loads("---\ntest: foo\ntest2: [ bar, baz ]")["test2"][0] == "bar"
