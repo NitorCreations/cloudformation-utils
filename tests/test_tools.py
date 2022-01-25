@@ -1,5 +1,5 @@
 import pytest
-from cloudformation_utils.tools import process_script, process_script_decorated, cloudformation_yaml_loads
+from cloudformation_utils import process_script, process_script_decorated, cloudformation_yaml_loads
 from collections import OrderedDict
 
 SHELL_RES = ['#!/bin/bash -xe\n', '\n', "CF_Foo='", OrderedDict([('Ref', 'Foo')]), "'\n", "Foo='", OrderedDict([('Ref', 'MyParam')]), "'\n"]
