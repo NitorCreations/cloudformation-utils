@@ -10,7 +10,7 @@ attrs==19.2.0
     # via pytest
 bumpversion==0.5.3
     # via -r dev-requirements.in
-certifi==2019.9.11
+certifi==2022.12.7
     # via requests
 chardet==3.0.4
     # via requests
@@ -52,21 +52,21 @@ pyflakes==2.1.1
     # via flake8
 pyparsing==2.4.2
     # via packaging
-pytest-cov==2.7.1
-    # via -r dev-requirements.in
-pytest-mock==1.10.4
-    # via -r dev-requirements.in
 pytest==4.6.5
     # via
     #   -r dev-requirements.in
     #   pytest-cov
     #   pytest-mock
-requests-mock==1.6.0
+pytest-cov==2.7.1
+    # via -r dev-requirements.in
+pytest-mock==1.10.4
     # via -r dev-requirements.in
 requests==2.22.0
     # via
     #   coveralls
     #   requests-mock
+requests-mock==1.6.0
+    # via -r dev-requirements.in
 six==1.12.0
     # via
     #   mock
