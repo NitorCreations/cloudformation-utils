@@ -12,6 +12,8 @@ permissions:
 jobs:
   build:
     runs-on: self-hosted
+    env:
+      PIP_ROOT_USER_ACTION: ignore
     steps:
     - uses: actions/checkout@v4
       with:
@@ -39,6 +41,8 @@ jobs:
   publish:
     needs: build
     runs-on: self-hosted
+    env:
+      PIP_ROOT_USER_ACTION: ignore
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v4
@@ -56,6 +60,8 @@ jobs:
     runs-on: self-hosted
     permissions:
       contents: write
+    env:
+      PIP_ROOT_USER_ACTION: ignore
     steps:
     - uses: actions/checkout@v4
 
