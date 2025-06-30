@@ -80,3 +80,20 @@ def test_yaml_loads():
         cloudformation_yaml_loads("---\ntest: foo\ntest2: [ bar, baz ]")["test2"][0]
         == "bar"
     )
+
+
+def test_inline_replacement():
+    """Test that hits line 279 - IN_PLACE_RE regex matching with prefix text"""
+    result = process_script("tests/inline_test.txt")
+
+    # Expected result for "prefix text $CF{MyParam} suffix text"
+    expected = [
+        "prefix text ",  # This is result.group(1) that gets appended on line 279
+        OrderedDict([("Ref", "MyParam")]),
+        " suffix text",
+        "another line with ",  # This is another result.group(1)
+        OrderedDict([("Ref", "AnotherParam")]),
+        " and more text",
+    ]
+
+    assert result == expected

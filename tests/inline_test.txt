@@ -1,0 +1,2 @@
+prefix text $CF{MyParam} suffix text
+another line with $CF{AnotherParam|default} and more text
