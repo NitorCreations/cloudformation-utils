@@ -3,6 +3,19 @@ import yaml
 from yaml import ScalarNode, SequenceNode, MappingNode
 from collections import OrderedDict
 
+try:
+    from ._version import version as __version__
+except ImportError:
+    # Version file not generated yet (development mode)
+    __version__ = "unknown"
+
+__all__ = [
+    "__version__",
+    "cloudformation_yaml_loads",
+    "process_script",
+    "process_script_decorated",
+]
+
 # the "var " prefix is to support javascript as well
 VAR_DECL_RE = re.compile(
     r'^((\s*var\s+)|(\s*const\s+))?CF_([^\s=]+)[\s="\']*([^#"\'\`;]*)(?:["\'\s\`;]*)(//)?(#optional)?')

@@ -1,12 +1,133 @@
 [build-system]
 requires = [
-    "setuptools >= 48",
-    "setuptools_scm[toml] >= 4, <6",
-    "setuptools_scm_git_archive",
-    "wheel >= 0.29.0",
+    "setuptools >= 61.0",
+    "setuptools_scm[toml] >= 8.0",
+    "wheel",
 ]
-build-backend = 'setuptools.build_meta'
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloudformation-utils"
+description = "A Python library for reading, writing and pre-processing CloudFormation YAML stacks"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    {name = "Pasi Niemi", email = "pasi.niemi@nitor.com"},
+]
+maintainers = [
+    {name = "Pasi Niemi", email = "pasi.niemi@nitor.com"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Other Environment",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration",
+]
+keywords = ["aws", "cloudformation", "yaml", "infrastructure", "devops"]
+requires-python = ">=3.8"
+dependencies = [
+    "pyyaml>=6.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/NitorCreations/cloudformation-utils"
+Documentation = "https://github.com/NitorCreations/cloudformation-utils"
+Repository = "https://github.com/NitorCreations/cloudformation-utils"
+"Bug Tracker" = "https://github.com/NitorCreations/cloudformation-utils/issues"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-mock>=3.10",
+    "requests-mock>=1.10",
+]
+dev = [
+    "cloudformation-utils[test]",
+    "build",
+    "twine",
+    "pre-commit",
+    "ruff",
+    "mypy",
+    "types-PyYAML",
+]
+
+[tool.setuptools]
+packages = ["cloudformation_utils"]
+include-package-data = true
 
 [tool.setuptools_scm]
-write_to = "screed/version.py"
-git_describe_command = "git describe --dirty --tags --long --match v* --first-parent"
+write_to = "cloudformation_utils/_version.py"
+
+[tool.pytest.ini_options]
+addopts = "--cov=cloudformation_utils --cov-report=term-missing --cov-report=html"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["cloudformation_utils"]
+omit = ["*/tests/*", "*/_version.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+
+[tool.ruff]
+target-version = "py38"
+line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["B011"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
