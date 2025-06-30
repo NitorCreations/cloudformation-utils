@@ -25,18 +25,18 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -e .[test]
+        python -m pip install --upgrade pip --root-user-action=ignore
+        pip install -e .[test] --root-user-action=ignore
 
     - name: Lint with ruff
       run: |
-        pip install ruff
+        pip install ruff --root-user-action=ignore
         ruff check .
         ruff format --check .
 
     - name: Type check with mypy
       run: |
-        pip install mypy types-PyYAML
+        pip install mypy types-PyYAML --root-user-action=ignore
         mypy cloudformation_utils
 
     - name: Test with pytest
@@ -66,8 +66,8 @@ jobs:
 
     - name: Install build dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install build twine
+        python -m pip install --upgrade pip --root-user-action=ignore
+        pip install build twine --root-user-action=ignore
 
     - name: Build package
       run: python -m build
