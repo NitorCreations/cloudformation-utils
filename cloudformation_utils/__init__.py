@@ -152,7 +152,7 @@ def cloudformation_yaml_loads(content: str) -> Any:
     class OrderedLoader(yaml.SafeLoader):
         pass
 
-    def construct_mapping(loader: Any, node: Any) -> OrderedDict[str, Any]:
+    def construct_mapping(loader: Any, node: Any) -> Any:
         loader.flatten_mapping(node)
         return OrderedDict(loader.construct_pairs(node))
 
