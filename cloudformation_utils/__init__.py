@@ -1,5 +1,6 @@
 import re
 from collections import OrderedDict
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import yaml
 from yaml import MappingNode, ScalarNode, SequenceNode
@@ -27,7 +28,7 @@ EMBED_DECL_RE = re.compile(
 IN_PLACE_RE = re.compile(r"^([^\$]*?)\$CF{([^}\|]*)(\|[^}]*)?}(#optional)?(.*)")
 
 
-def _descalar(target):
+def _descalar(target: Any) -> Any:
     if (
         isinstance(target, ScalarNode)
         or isinstance(target, SequenceNode)
@@ -46,79 +47,79 @@ def _descalar(target):
         return target
 
 
-def _decode_parameter_name(name):
+def _decode_parameter_name(name: str) -> str:
     return re.sub("__", "::", name)
 
 
-def _base64_ctor(loader, tag_suffix, node):
+def _base64_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Base64": _descalar(node.value)}
 
 
-def _findinmap_ctor(loader, tag_suffix, node):
+def _findinmap_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::FindInMap": _descalar(node.value)}
 
 
-def _getatt_ctor(loader, tag_suffix, node):
+def _getatt_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::GetAtt": _descalar(node.value)}
 
 
-def _getazs_ctor(loader, tag_suffix, node):
+def _getazs_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::GetAZs": _descalar(node.value)}
 
 
-def _importvalue_ctor(loader, tag_suffix, node):
+def _importvalue_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::ImportValue": _descalar(node.value)}
 
 
-def _join_ctor(loader, tag_suffix, node):
+def _join_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Join": _descalar(node.value)}
 
 
-def _select_ctor(loader, tag_suffix, node):
+def _select_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Select": _descalar(node.value)}
 
 
-def _split_ctor(loader, tag_suffix, node):
+def _split_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Split": _descalar(node.value)}
 
 
-def _sub_ctor(loader, tag_suffix, node):
+def _sub_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Sub": _descalar(node.value)}
 
 
-def _ref_ctor(loader, tag_suffix, node):
+def _ref_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Ref": _descalar(node.value)}
 
 
-def _and_ctor(loader, tag_suffix, node):
+def _and_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::And": _descalar(node.value)}
 
 
-def _equals_ctor(loader, tag_suffix, node):
+def _equals_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Equals": _descalar(node.value)}
 
 
-def _if_ctor(loader, tag_suffix, node):
+def _if_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::If": _descalar(node.value)}
 
 
-def _not_ctor(loader, tag_suffix, node):
+def _not_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Not": _descalar(node.value)}
 
 
-def _or_ctor(loader, tag_suffix, node):
+def _or_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Or": _descalar(node.value)}
 
 
-def _importfile_ctor(loader, tag_suffix, node):
+def _importfile_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::ImportFile": _descalar(node.value)}
 
 
-def _importyaml_ctor(loader, tag_suffix, node):
+def _importyaml_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::ImportYaml": _descalar(node.value)}
 
 
-def _merge_ctor(loader, tag_suffix, node):
+def _merge_ctor(loader: Any, tag_suffix: str, node: Any) -> Dict[str, Any]:
     return {"Fn::Merge": _descalar(node.value)}
 
 
@@ -144,14 +145,14 @@ INTRISINC_FUNCS = {
 }
 
 
-def cloudformation_yaml_loads(content):
+def cloudformation_yaml_loads(content: str) -> Any:
     for name in INTRISINC_FUNCS:
         yaml.add_multi_constructor(name, INTRISINC_FUNCS[name], Loader=yaml.SafeLoader)
 
     class OrderedLoader(yaml.SafeLoader):
         pass
 
-    def construct_mapping(loader, node):
+    def construct_mapping(loader: Any, node: Any) -> OrderedDict[str, Any]:
         loader.flatten_mapping(node)
         return OrderedDict(loader.construct_pairs(node))
 
@@ -162,12 +163,12 @@ def cloudformation_yaml_loads(content):
     return yaml.load(content, OrderedLoader)
 
 
-def process_script_decorated(filename):
+def process_script_decorated(filename: str) -> List[Any]:
     return process_script(filename, ref_decorator=source_and_optional_ref_decorator)
 
 
-def process_script(filename, ref_decorator=None):
-    arr = []
+def process_script(filename: str, ref_decorator: Optional[Callable] = None) -> List[Any]:
+    arr: List[Any] = []
     with open(filename) as fd:
         line_no = 1
         for line in fd:
@@ -178,8 +179,8 @@ def process_script(filename, ref_decorator=None):
 
 
 def _apply_source(
-    data, filename, line_no, is_optional, default_val, ref_decorator=None
-):
+    data: Any, filename: str, line_no: int, is_optional: bool, default_val: str, ref_decorator: Optional[Callable] = None
+) -> None:
     if isinstance(data, OrderedDict):
         if "Ref" in data and ref_decorator:
             ref_decorator(data, filename, line_no, is_optional, default_val)
@@ -202,7 +203,7 @@ def _apply_source(
             )
 
 
-def source_and_optional_ref_decorator(ref, filename, line_no, is_optional, default_val):
+def source_and_optional_ref_decorator(ref: Dict[str, Any], filename: str, line_no: int, is_optional: bool, default_val: str) -> None:
     ref["__source"] = filename
     ref["__source_line"] = str(line_no)
     if is_optional:
@@ -210,8 +211,8 @@ def source_and_optional_ref_decorator(ref, filename, line_no, is_optional, defau
         ref["__default"] = default_val
 
 
-def _do_replace(line, line_no, filename, ref_decorator=None):
-    arr = []
+def _do_replace(line: str, line_no: int, filename: str, ref_decorator: Optional[Callable] = None) -> List[Any]:
+    arr: List[Any] = []
     result = VAR_DECL_RE.match(line)
     if result:
         js_prefix = result.group(1)
@@ -273,7 +274,7 @@ def _do_replace(line, line_no, filename, ref_decorator=None):
                         str(result.group(3)[1:] if result.group(3) else ""),
                     )
                 arr.append(ref)
-                arr = arr + _do_replace(result.group(5), filename)
+                arr = arr + _do_replace(result.group(5), line_no, filename)
             else:
                 arr.append(line)
     return arr
