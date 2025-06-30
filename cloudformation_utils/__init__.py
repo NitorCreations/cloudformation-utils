@@ -1,7 +1,8 @@
 import re
-import yaml
-from yaml import ScalarNode, SequenceNode, MappingNode
 from collections import OrderedDict
+
+import yaml
+from yaml import MappingNode, ScalarNode, SequenceNode
 
 try:
     from ._version import version as __version__

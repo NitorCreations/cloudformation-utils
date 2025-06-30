@@ -1,6 +1,10 @@
-import pytest
-from cloudformation_utils import process_script, process_script_decorated, cloudformation_yaml_loads
 from collections import OrderedDict
+
+from cloudformation_utils import (
+    cloudformation_yaml_loads,
+    process_script,
+    process_script_decorated,
+)
 
 SHELL_RES = ['#!/bin/bash -xe\n', '\n', "CF_Foo='", OrderedDict([('Ref', 'Foo')]), "'\n", "Foo='", OrderedDict([('Ref', 'MyParam')]), "'\n"]
 JAVASCRIPT_RES = ["var CF_foo='", OrderedDict([('Ref', 'foo'), ('__source', 'tests/javascript.js'), ('__source_line', '1'), ('__optional', 'true'), ('__default', 'default')]), "';\n"]
