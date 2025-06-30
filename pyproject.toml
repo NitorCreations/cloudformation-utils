@@ -10,8 +10,7 @@ build-backend = "setuptools.build_meta"
 name = "cloudformation-utils"
 description = "A Python library for reading, writing and pre-processing CloudFormation YAML stacks"
 readme = "README.md"
-license = "Apache-2.0"
-license-files = ["LICENSE"]
+license = {file = "LICENSE"}
 authors = [
     {name = "Pasi Niemi", email = "pasi.niemi@nitor.com"},
 ]
