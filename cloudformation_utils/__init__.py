@@ -1,6 +1,6 @@
 import re
 from collections import OrderedDict
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional
 
 import yaml
 from yaml import MappingNode, ScalarNode, SequenceNode
