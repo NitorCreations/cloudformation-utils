@@ -167,7 +167,9 @@ def process_script_decorated(filename: str) -> List[Any]:
     return process_script(filename, ref_decorator=source_and_optional_ref_decorator)
 
 
-def process_script(filename: str, ref_decorator: Optional[Callable] = None) -> List[Any]:
+def process_script(
+    filename: str, ref_decorator: Optional[Callable] = None
+) -> List[Any]:
     arr: List[Any] = []
     with open(filename) as fd:
         line_no = 1
@@ -179,7 +181,12 @@ def process_script(filename: str, ref_decorator: Optional[Callable] = None) -> L
 
 
 def _apply_source(
-    data: Any, filename: str, line_no: int, is_optional: bool, default_val: str, ref_decorator: Optional[Callable] = None
+    data: Any,
+    filename: str,
+    line_no: int,
+    is_optional: bool,
+    default_val: str,
+    ref_decorator: Optional[Callable] = None,
 ) -> None:
     if isinstance(data, OrderedDict):
         if "Ref" in data and ref_decorator:
@@ -203,7 +210,13 @@ def _apply_source(
             )
 
 
-def source_and_optional_ref_decorator(ref: Dict[str, Any], filename: str, line_no: int, is_optional: bool, default_val: str) -> None:
+def source_and_optional_ref_decorator(
+    ref: Dict[str, Any],
+    filename: str,
+    line_no: int,
+    is_optional: bool,
+    default_val: str,
+) -> None:
     ref["__source"] = filename
     ref["__source_line"] = str(line_no)
     if is_optional:
@@ -211,7 +224,9 @@ def source_and_optional_ref_decorator(ref: Dict[str, Any], filename: str, line_n
         ref["__default"] = default_val
 
 
-def _do_replace(line: str, line_no: int, filename: str, ref_decorator: Optional[Callable] = None) -> List[Any]:
+def _do_replace(
+    line: str, line_no: int, filename: str, ref_decorator: Optional[Callable] = None
+) -> List[Any]:
     arr: List[Any] = []
     result = VAR_DECL_RE.match(line)
     if result:
